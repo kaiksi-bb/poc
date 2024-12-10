@@ -1,22 +1,28 @@
-name: Conventional Commits Checker
+name: PR Title
+
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, edited]
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
 jobs:
-  lint-commits:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.3.1
-        with:
-          fetch-depth: 0
-      - name: Setup NodeJS and NPM
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.13.2
-      - name: Add @commitlint
-        run: npm install -g @commitlint/cli @commitlint/config-conventional
-      - name: Lint PR and commits
-        env:
-          TITLE: ${{ github.event.pull_request.title }}
-          COMMITS: ${{ github.event.pull_request.commits }}
-        run: bin/conventional-commits.sh "$TITLE" $COMMITS
+    check:
+        runs-on: ubuntu-latest
+
+        steps:
+        - uses: actions/checkout@v4
+
+        - name: Setup Python
+          uses: actions/setup-python@v5
+          with:
+              python-version: "3.10"
+
+        - name: Install Dependencies
+          run: pip install commitizen        
+
+        - name: Check PR Title
+          env:
+              TITLE: ${{ github.event.pull_request.title }}
+          run: cz check --message "$TITLE"
