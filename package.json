@@ -1,0 +1,7 @@
+{
+  "name": "poc-npm-build",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'Running build script...'"
+  }
+}
