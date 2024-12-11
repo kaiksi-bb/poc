@@ -1,16 +1,19 @@
-name: Label sponsors
+name: Malicious Label Changer
 on:
   pull_request:
     types: [opened]
-  issues:
-    types: [opened]
 jobs:
   build:
-    name: is-sponsor-label
     runs-on: ubuntu-latest
     steps:
-      - uses: JasonEtco/is-sponsor-label-action@v1.2.0
-        with:
-          label: sponsor
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Malicious Step - Change Label
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels \
+          -d '{"labels": ["malicious-label"]}'
