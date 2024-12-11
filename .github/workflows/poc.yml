@@ -13,4 +13,4 @@ jobs:
 
       - name: Run npm build
         run: |
-          echo "Running npm legit workflow..."
+          echo "Running npm malicious workflow..."
