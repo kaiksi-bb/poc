@@ -7,9 +7,6 @@ on:
       - master
       - 'releases/**'
   pull_request:
-    branches:
-      - master
-      - 'releases/**'
   merge_group:
 
 jobs:
